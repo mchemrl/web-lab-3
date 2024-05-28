@@ -11,7 +11,7 @@
 
         <main class="product-box">
             <form class="adder">
-                <input class="product-name" type="text" placeholder="Назва товару">
+                <input class="product-name" type="text" placeholder="Назва товару" onkeydown="handleKeyDown(event)">
                 <button class="add-button" type="submit" data-tooltip="Додати продукт" onclick="addProduct(event)">Додати</button>
             </form>
             <section class="product first">
@@ -19,13 +19,13 @@
                     <p>Помідори</p>
                 </div>
                 <div class="quantity">
-                    <button class="minus" data-tooltip="Зменшити" onclick="decrease(event)">-</button>
+                    <button class="minus" data-tooltip="Зменшити" onclick="decrease(event)" type="button">-</button>
                     <button class="number" data-tooltip="Кількість" disabled="disabled">2</button>
-                    <button class="plus" data-tooltip="Збільшіти" onclick="increase(event)">+</button>
+                    <button class="plus" data-tooltip="Збільшіти" onclick="increase(event)" type="button">+</button>
                 </div>
                 <div class="status">
                     <button class="isBought" data-tooltip="Статус" onclick="buy(event)">Не куплено</button>
-                    <button class="cancel" data-tooltip="Видалити" onclick="todelete(event)">x</button>    
+                    <button class="cancel" data-tooltip="Видалити" onclick="deleteProduct(event)" type="button">x</button>    
                 </div>
             </section>
             <section class="product second">
@@ -33,13 +33,13 @@
                     <p>Печиво</p>
                 </div>
                 <div class="quantity">
-                    <button class="minus"  data-tooltip="Зменшити" onclick="decrease(event)">-</button>
+                    <button class="minus"  data-tooltip="Зменшити" onclick="decrease(event)" type="button">-</button>
                     <button class="number" data-tooltip="Кількість" disabled="disabled">2</button>
-                    <button class="plus" data-tooltip="Збільшіти" onclick="increase(event)">+</button>
+                    <button class="plus" data-tooltip="Збільшіти" onclick="increase(event)" type="button">+</button>
                 </div>
                 <div class="status">
                     <button class="isBought" data-tooltip="Статус" onclick="buy(event)">Куплено</button>
-                    <button class="cancel" data-tooltip="Видалити" onclick="todelete(event)">x</button>   
+                    <button class="cancel" data-tooltip="Видалити" onclick="deleteProduct(event)" type="button">x</button>   
                 </div>
             </section>
             <section class="product third">
@@ -47,13 +47,13 @@
                     <p contenteditable="true">Сир</p>
                 </div>
                 <div class="quantity">
-                    <button class="minus" data-tooltip="Зменшити" onclick="decrease(event)">-</button>
+                    <button class="minus" data-tooltip="Зменшити" onclick="decrease(event)" type="button">-</button>
                     <button class="number" data-tooltip="Кількість" disabled="disabled">1</button>
-                    <button class="plus" data-tooltip="Збільшіти" onclick="increase(event)">+</button>
+                    <button class="plus" data-tooltip="Збільшіти" onclick="increase(event)" type="button">+</button>
                 </div>
                 <div class="status">
                     <button class="isBought" data-tooltip="Статус" onclick="buy(event)">Куплено</button>
-                    <button class="cancel" data-tooltip="Видалити" onclick="todelete(event)">x</button>   
+                    <button class="cancel" data-tooltip="Видалити" onclick="deleteProduct(event)" type="button">x</button>   
                 </div>
             </section>
         </main>
@@ -85,6 +85,6 @@
                 <p class="badge-text myname">Victoria Dyrda</p>
             </button>
         </footer>
-        <script src="main.js"></script>
+        <script src="./main.js"></script>
 </body>
 </html>
