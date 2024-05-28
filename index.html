@@ -12,48 +12,48 @@
         <main class="product-box">
             <form class="adder">
                 <input class="product-name" type="text" placeholder="Назва товару">
-                <button class="add-button" type="submit" data-tooltip="Додати продукт">Додати</button>
+                <button class="add-button" type="submit" data-tooltip="Додати продукт" onclick="addProduct(event)">Додати</button>
             </form>
             <section class="product first">
-                <div class="name" contenteditable="false">
+                <div class="name" contenteditable="false" onfocus="remember(event)" onblur="rename(event)">
                     <p>Помідори</p>
                 </div>
                 <div class="quantity">
-                    <button class="minus" data-tooltip="Зменшити">-</button>
-                    <button class="number" data-tooltip="Кількість">2</button>
-                    <button class="plus" data-tooltip="Збільшіти">+</button>
+                    <button class="minus" data-tooltip="Зменшити" onclick="decrease(event)">-</button>
+                    <button class="number" data-tooltip="Кількість" disabled="disabled">2</button>
+                    <button class="plus" data-tooltip="Збільшіти" onclick="increase(event)">+</button>
                 </div>
                 <div class="status">
-                    <button class="isBought" data-tooltip="Статус">Не куплено</button>
-                    <button class="cancel" data-tooltip="Видалити">x</button>    
+                    <button class="isBought" data-tooltip="Статус" onclick="buy(event)">Не куплено</button>
+                    <button class="cancel" data-tooltip="Видалити" onclick="todelete(event)">x</button>    
                 </div>
             </section>
             <section class="product second">
-                <div class="name" contenteditable="true" >
+                <div class="name" contenteditable="true" onfocus="remember(event)" onblur="rename(event)">
                     <p>Печиво</p>
                 </div>
                 <div class="quantity">
-                    <button class="minus"  data-tooltip="Зменшити">-</button>
-                    <button class="number" data-tooltip="Кількість">2</button>
-                    <button class="plus" data-tooltip="Збільшіти">+</button>
+                    <button class="minus"  data-tooltip="Зменшити" onclick="decrease(event)">-</button>
+                    <button class="number" data-tooltip="Кількість" disabled="disabled">2</button>
+                    <button class="plus" data-tooltip="Збільшіти" onclick="increase(event)">+</button>
                 </div>
                 <div class="status">
-                    <button class="isBought" data-tooltip="Статус">Куплено</button>
-                    <button class="cancel" data-tooltip="Видалити">x</button>   
+                    <button class="isBought" data-tooltip="Статус" onclick="buy(event)">Куплено</button>
+                    <button class="cancel" data-tooltip="Видалити" onclick="todelete(event)">x</button>   
                 </div>
             </section>
             <section class="product third">
-                <div class="name" contenteditable="true">
+                <div class="name" contenteditable="true" onfocus="remember(event)" onblur="rename(event)">
                     <p contenteditable="true">Сир</p>
                 </div>
                 <div class="quantity">
-                    <button class="minus" data-tooltip="Зменшити">-</button>
-                    <button class="number" data-tooltip="Кількість">1</button>
-                    <button class="plus" data-tooltip="Збільшіти">+</button>
+                    <button class="minus" data-tooltip="Зменшити" onclick="decrease(event)">-</button>
+                    <button class="number" data-tooltip="Кількість" disabled="disabled">1</button>
+                    <button class="plus" data-tooltip="Збільшіти" onclick="increase(event)">+</button>
                 </div>
                 <div class="status">
-                    <button class="isBought" data-tooltip="Статус">Куплено</button>
-                    <button class="cancel" data-tooltip="Видалити">x</button>   
+                    <button class="isBought" data-tooltip="Статус" onclick="buy(event)">Куплено</button>
+                    <button class="cancel" data-tooltip="Видалити" onclick="todelete(event)">x</button>   
                 </div>
             </section>
         </main>
@@ -85,5 +85,6 @@
                 <p class="badge-text myname">Victoria Dyrda</p>
             </button>
         </footer>
+        <script src="main.js"></script>
 </body>
 </html>
