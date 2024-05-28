@@ -21,7 +21,7 @@ body{
 .cart{
     flex:1;
     margin-right: 2%;
-    height: 260px;
+    height: fit-content;
 }
 .adder{
     display: flex;   
@@ -173,14 +173,18 @@ body{
     align-items: center;
     border-bottom: 1px solid #BFBFBF;
     height: 25%;
-    margin: 0;
+    min-height: 30px;
     text-indent: 15px;
+    padding-bottom: 3%;
 }
 .remaining-item, .bought-item{
     height: 25%;
     align-items: center;
 	display: flex;
     border: 5px;
+    flex-wrap: wrap;
+    overflow: auto;
+    padding-bottom: 7%  ;
 }
 .remaining-item{
     border-bottom: 1px solid lightgrey;
@@ -191,8 +195,8 @@ body{
     border-radius: 5px;
     padding: 2.6%;
     margin-left: 5%;
-    margin-top: 5%;
-    margin-bottom: 5%;
+    margin-top: 2.5%;
+    margin-bottom: 2.5%;
     font-weight: bold;
     font-size: 14px;   
     display: inline-block; 
