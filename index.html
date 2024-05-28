@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ua">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuyList</title>
+    <link rel="stylesheet" href="./main.css">
+
+</head>
+<body>
+
+        <main class="product-box">
+            <form class="adder">
+                <input class="product-name" type="text" placeholder="Назва товару">
+                <button class="add-button" type="submit" data-tooltip="Додати продукт">Додати</button>
+            </form>
+            <section class="product first">
+                <div class="name" contenteditable="false">
+                    <p>Помідори</p>
+                </div>
+                <div class="quantity">
+                    <button class="minus" data-tooltip="Зменшити">-</button>
+                    <button class="number" data-tooltip="Кількість">2</button>
+                    <button class="plus" data-tooltip="Збільшіти">+</button>
+                </div>
+                <div class="status">
+                    <button class="isBought" data-tooltip="Статус">Не куплено</button>
+                    <button class="cancel" data-tooltip="Видалити">x</button>    
+                </div>
+            </section>
+            <section class="product second">
+                <div class="name" contenteditable="true" >
+                    <p>Печиво</p>
+                </div>
+                <div class="quantity">
+                    <button class="minus"  data-tooltip="Зменшити">-</button>
+                    <button class="number" data-tooltip="Кількість">2</button>
+                    <button class="plus" data-tooltip="Збільшіти">+</button>
+                </div>
+                <div class="status">
+                    <button class="isBought" data-tooltip="Статус">Куплено</button>
+                    <button class="cancel" data-tooltip="Видалити">x</button>   
+                </div>
+            </section>
+            <section class="product third">
+                <div class="name" contenteditable="true">
+                    <p contenteditable="true">Сир</p>
+                </div>
+                <div class="quantity">
+                    <button class="minus" data-tooltip="Зменшити">-</button>
+                    <button class="number" data-tooltip="Кількість">1</button>
+                    <button class="plus" data-tooltip="Збільшіти">+</button>
+                </div>
+                <div class="status">
+                    <button class="isBought" data-tooltip="Статус">Куплено</button>
+                    <button class="cancel" data-tooltip="Видалити">x</button>   
+                </div>
+            </section>
+        </main>
+
+        <aside class="cart">
+            <h2 class="title">Залишилось</h2>
+            <div class="remaining-item">
+                <span class="product-item">
+                    Печиво
+                    <span class="amount">2</span>
+                </span>
+                <span class="product-item">
+                    Сир
+                    <span class="amount">1</span>
+                </span>
+            </div>
+            <h2 class="title">Куплено</h2>
+            <div class="bought-item">
+                <span class="product-item">
+                    Помідори
+                    <span class="amount">2</span>
+                </span>
+            </div>
+        </aside>
+        <footer>
+            <button class="popup-badge">
+                <p class="badge-text buylist-text">Buy List</p>
+                <p class="badge-text creator">Created by:</p>
+                <p class="badge-text myname">Victoria Dyrda</p>
+            </button>
+        </footer>
+</body>
+</html>

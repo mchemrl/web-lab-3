@@ -1,0 +1,326 @@
+body{
+    background-color: #DADADA;
+    font-family: Trebuchet MS, sans-serif;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.product-box, .cart{
+    width: 70%;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 4px 4px 8px #BFBFBF;
+    margin-left: 2%;
+    margin-top: 2.5%;
+}
+.product-box{
+    flex:3;
+    height: 100%;
+}
+.cart{
+    flex:1;
+    margin-right: 2%;
+    height: 260px;
+}
+.adder{
+    display: flex;   
+    padding: 2% 2%;
+    border-bottom: 1px solid #BFBFBF;
+    height: 8%;
+    align-items: center;
+    padding-bottom:2.6%;
+}
+.product-name::placeholder{
+    text-indent: 10px;
+}
+.add-button, .product-name{
+    width: 75%;
+    border: 1px solid lightgrey;
+	border-radius: 5px 0 0 5px;
+    height: 39px;
+}   
+.add-button{
+    flex: 1;
+    background-color: #2285D0;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    border: 0;
+    border: 1px solid #2285D0;
+    border-radius: 0 5px 5px 0;
+    box-shadow: 0 4px #2276B7;
+    font-size: 16px;
+    width: 20%;
+}
+.add-button:hover{
+    background-color: #2276B7;
+	border:#2276B7;
+}
+.product-name{
+    flex: 5;
+    margin-top: 5px;
+}
+.product{
+    display: flex;
+	border-bottom: 1.5px solid lightgrey;
+    align-items: center;
+    height: 22%;
+}
+.name, .quantity, .status{
+    width: 33%;
+    height: 65%;
+    align-items: center;
+    display: flex;
+    justify-content: right;
+ }
+ .name{
+    margin-left: 3%;
+    justify-content: left;
+ }
+ .quantity{
+    justify-content: center;
+}
+.status{
+    margin-left: 1%;
+}
+.minus, .plus, .cancel, .number, .isBought{
+    background-color: #DB2828;
+    border-radius: 50%;
+    color: white;
+    border:0;
+	box-shadow: 0 4px #BF2728;
+    font-size: 18px;
+    height: 34px;
+	width:38px;
+    font-weight: bold;
+    margin-left: 3%;
+    margin-bottom: 4px;
+}
+.plus{
+    background-color: #22BA46;
+	box-shadow: 0 4px #21A340;
+}
+.plus:hover{
+    background-color: #21A340;
+}
+.minus:hover, .cancel:hover{
+    background-color: #BF2728;
+}
+.isBought:hover{
+    background-color: #E8E8E8;
+}
+.number{
+    border-radius: 5px;
+    background-color: #E8E8E8;
+    color:#5D5D5D;
+    box-shadow: 0 0px;
+    font-size: 16px;
+    margin-bottom: 0;
+}
+.isBought{
+    background-color: #F2F2F2;
+    box-shadow: 0 4px #C2C2C3;
+    color:#6B6B6B;
+    font-size: 11px;
+    border-radius: 5px;
+    width:40%;
+    border: 1px solid #C2C2C3;
+}
+.cancel{
+    border-radius: 5px;
+    font-size: 14px;   
+    margin-right:7%; 
+}
+.first > .status > .cancel{
+    visibility: hidden;
+    position: absolute;
+}
+.first > .status > .isBought{
+    margin-right: 7%;
+}
+[contenteditable="false"]{
+	text-decoration: line-through;
+}
+.name:focus{
+	border: 1px solid #60AEEA;
+	box-shadow: 4px 4px 8px #C0DEF5;
+	outline: none;
+    height: 30%;
+    border-radius: 4px;
+    margin-top:1%;
+    margin-bottom: 1%;
+    width: 33%;
+    text-indent: 3px;
+    font-size: 13.7px;
+}
+.product-name:focus{
+    border: 1px solid #60AEEA;
+	box-shadow: 4px 4px 8px #C0DEF5;
+	outline: none;
+}
+.third > .quantity > .minus{
+    background-color: #EF9F9E;
+    box-shadow: 0 4px #EF9F9E;
+}
+.first > .quantity > .minus, .first > .quantity > .plus{
+    visibility: hidden;
+}
+.title{
+    font-size: 20px;
+    color: #212121;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #BFBFBF;
+    height: 25%;
+    margin: 0;
+    text-indent: 15px;
+}
+.remaining-item, .bought-item{
+    height: 25%;
+    align-items: center;
+	display: flex;
+    border: 5px;
+}
+.remaining-item{
+    border-bottom: 1px solid lightgrey;
+}
+.product-item{
+    color:#626262;
+    background-color: #E8E8E8;
+    border-radius: 5px;
+    padding: 2.6%;
+    margin-left: 5%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    font-weight: bold;
+    font-size: 14px;   
+    display: inline-block; 
+}
+.amount{
+    color: white;
+    background-color: #F2701C;
+    font-weight: bold;
+    border-radius: 50%;
+    display: inline-block;
+	height: 20px;
+	width: 20px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 20px;
+}
+.bought-item{
+    text-decoration: line-through;
+}
+.bought-item > .product-item > .amount{
+    text-decoration: line-through;
+}
+
+[data-tooltip] {
+    position: relative;
+}
+[data-tooltip]:before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    font-size: 12px;
+    transform: translateX(-50%) scaleY(0);
+    background-color: #AF01DA;
+	color: white;
+    padding: 5px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transform-origin: bottom;
+    position: absolute; 
+}
+[data-tooltip]:hover:before {
+    transform: translateX(-50%) scaleY(1);
+    opacity: 1;
+}
+.popup-badge{
+    background-color: #AF00DA;
+    margin-left: 50px;
+    width: 100px;
+    height: 40px;
+    border:0;
+    border-radius: 7px 7px 0 0;
+    padding: 0;
+	transition: all 1s ease;
+    left:0;
+    bottom:0;
+    position: fixed;
+    display: block;
+}
+.badge-text{
+    color: white;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 16px;
+    margin: auto;
+}
+.popup-badge:hover{
+    background-color: #4C01DA;
+    height: 90px;
+}
+.creator{
+    font-size: 7px;
+    margin-left:20px;
+    line-height: 10px;
+    text-align: left;
+}
+.myname{
+    font-size:10px;
+    line-height: 17px;
+    text-align: left;
+    margin-left: 20px;
+}
+@media (max-width: 588px){
+    .isBought{
+        font-size: 7px;
+    }
+    .title{
+        font-size: 14px;
+    }
+    .add-button{
+        font-size: 12px;
+    }
+}
+@media (max-width: 500px){
+    body{
+        display: flex;
+        flex-direction: column;
+        margin-right: 5%;
+    }
+    .product-box, .cart{
+        width: 100%;
+    }
+    .title{
+        font-size: 18px;
+        padding: 5% 0 5% 0;
+    }
+    .product-item{
+        margin: 5% 0 5% 15px;
+    }
+} 
+@media print{
+    *{
+        -print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+    .popup-badge{
+        background-color: white;
+        color: black;
+        border:3px solid darkgray;
+        height: 40px;
+    }
+    .buylist-text{
+        position: absolute;
+        visibility: hidden;
+    }
+    .popup-badge > .creator, .popup-badge > .myname{
+        color:black;
+        margin-left: 10px;
+    }
+}
