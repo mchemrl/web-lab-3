@@ -1,9 +1,19 @@
 var cartItems = document.getElementsByClassName('product-item'); //products in the right panel
-
+let editedName = '';
 
 function remember(event){
+    var productItem = event.target.parentElement;
+    var editedName = productItem.getElementsByClassName('name')[0].textContent.trim();
 }
 function rename(event){
+    var productItem = event.target.parentElement;
+    var newName = productItem.getElementsByTagName('p')[0].textContent.trim();
+    if (newName !== "") {
+        editedName = newName;
+    } else {
+        productItem.getElementsByTagName('p')[0].textContent = editedName;
+    }
+    updateRightPanel();
 }
 
 //function to delete a product from the cart and the left panel
@@ -28,6 +38,30 @@ function deleteProduct(event){
 }
 
 function buy(event){
+    var buttonClicked = event.target;
+    var productItem = buttonClicked.parentElement.parentElement;
+
+    // change the status
+    if (buttonClicked.textContent === 'Куплено') {
+        buttonClicked.textContent = 'Не куплено';
+        productItem.getElementsByClassName('cancel')[0].style.visibility='hidden';
+        productItem.getElementsByClassName('cancel')[0].style.position='absolute';
+        productItem.getElementsByClassName('plus')[0].style.visibility='hidden';
+        productItem.getElementsByClassName('minus')[0].style.visibility='hidden';
+        buttonClicked.style.marginRight = '7%';
+        productItem.getElementsByClassName('name')[0].style.textDecoration = 'line-through';
+        productItem.getElementsByClassName('name')[0].contentEditable = 'false';
+    } else {
+        buttonClicked.textContent = 'Куплено';
+        productItem.getElementsByClassName('cancel')[0].style.visibility='visible';
+        productItem.getElementsByClassName('cancel')[0].style.position='relative';
+        productItem.getElementsByClassName('plus')[0].style.visibility='visible';
+        productItem.getElementsByClassName('minus')[0].style.visibility='visible';
+        buttonClicked.style.marginRight = '0';
+        productItem.getElementsByClassName('name')[0].contentEditable = 'true';
+        productItem.getElementsByClassName('name')[0].style.textDecoration = 'none';
+    }
+    updateRightPanel();
 }
 
 //function to !increase the quantity of a product in the cart
@@ -78,7 +112,20 @@ function addProduct(event) {
 
     var nameDiv = document.createElement('div');
     nameDiv.className = 'name';
-    nameDiv.textContent = productName;
+    nameDiv.contentEditable = 'true';
+    nameDiv.style.height = '51.2px';
+    nameDiv.addEventListener('focus', function(event){
+    nameDiv.style.height = '30%';nameDiv.style.marginTop = '1%';
+    nameDiv.style.paddingBottom = '1%';
+    nameDiv.style.paddingTop = '2%';
+    nameDiv.style.marginBottom = '2%';
+    nameDiv.style.textIndent = '3px';
+    }); 
+    
+    var pTag = document.createElement('p');
+    pTag.textContent = productName;
+    
+    nameDiv.appendChild(pTag);
 
     var quantityDiv = document.createElement('div');
     quantityDiv.className = 'quantity';
