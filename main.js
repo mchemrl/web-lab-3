@@ -1,4 +1,3 @@
-var cartItems = document.getElementsByClassName('product-item'); //products in the right panel
 var products = JSON.parse(localStorage.getItem('products')) || [];
 function product(name, quantity, status) {
     return { 
@@ -13,10 +12,13 @@ function product(name, quantity, status) {
     };
 }
 
+//function to remember the name of the product in the cart
 function remember(event){
     var productItem = event.target.parentElement;
     var editedName = productItem.getElementsByClassName('name')[0].textContent.trim();
 }
+
+//function to rename a product in the cart
 function rename(event){
     var productItem = event.target.parentElement;
     var newName = productItem.getElementsByTagName('p')[0].textContent.trim();
@@ -42,20 +44,16 @@ function deleteProduct(event){
             products.splice(productIndex, 1);
             localStorage.setItem('products', JSON.stringify(products));
 
-            console.log(cartItems);
             updateRightPanel();
         });
     }
 }
 
+//function to change the status of the product in the cart
 function buy(event){
     var buttonClicked = event.target;
     var productItem = buttonClicked.parentElement.parentElement;
-
-    // Get the product name
     var productName = productItem.getElementsByClassName('name')[0].textContent;
-
-    // Find the corresponding product in the products array
     var productIndex = products.findIndex(product => product.name === productName);
 
     // change the status
@@ -69,7 +67,7 @@ function buy(event){
         productItem.getElementsByClassName('name')[0].style.textDecoration = 'line-through';
         productItem.getElementsByClassName('name')[0].contentEditable = 'false';
 
-        // Update the product status in the array
+        // update the product status in the array
         products[productIndex].status = 'Не куплено';
         products[productIndex].plusVisible = false;
         products[productIndex].minusVisible = false;
@@ -84,16 +82,13 @@ function buy(event){
         productItem.getElementsByClassName('name')[0].contentEditable = 'true';
         productItem.getElementsByClassName('name')[0].style.textDecoration = 'none';
 
-        // Update the product status in the array
+        // update the product status in the array
         products[productIndex].status = 'Куплено';
         products[productIndex].plusVisible = true;
         products[productIndex].minusVisible = true;
         products[productIndex].cancelVisible = true;
     }
-
-    // Save the updated products array to local storage
     localStorage.setItem('products', JSON.stringify(products));
-
     updateRightPanel();
 }
 
@@ -120,11 +115,9 @@ function changeQuantity(event, delta) {
         minusButton.style.backgroundColor = '#DB2828';
         minusButton.style.boxShadow = '0 4px #BF2728';
     }
-
     //update local storage data
     products[productIndex].quantity = currentQuantity;
     localStorage.setItem('products', JSON.stringify(products));
-
     updateRightPanel();
 }
 
@@ -171,24 +164,20 @@ function handleKeyDown(event) {
 function addProduct(event) {
     event.preventDefault(); // prevent form submission
     var productName = document.querySelector('.product-name').value.trim();
-    
-    if (!productName) return; // Ensure non-empty product name
 
-    // Create new product object and push to products array
+    if (!productName) return;  // if the input field is empty, do nothing
     let newProduct = product(productName, 1, 'Куплено');
     products.push(newProduct);
     localStorage.setItem('products', JSON.stringify(products));
 
-    // Create the product element
     createProductElement(newProduct);
 
-    // Clear and focus the input field
     document.querySelector('.product-name').value = '';
     document.querySelector('.product-name').focus();
     updateRightPanel();
 }
 
-// Helper function to create and append product element
+// create a section for a product
 function createProductElement(product) {
     var newProductElement = document.createElement('section');
     newProductElement.className = 'product';
@@ -271,6 +260,7 @@ function createProductElement(product) {
     updateRightPanel();
 }
 
+//after reload
 function addProductAfterReload(product) {
     createProductElement(product);
 }
