@@ -14,14 +14,14 @@
                 <input class="product-name" type="text" placeholder="Назва товару" onkeydown="handleKeyDown(event)">
                 <button class="add-button" type="submit" data-tooltip="Додати продукт" onclick="addProduct(event)">Додати</button>
             </form>
-            <section class="product first">
+          <!--  <section class="product first">
                 <div class="name" contenteditable="false" onfocus="remember(event)"">
                     <p>Помідори</p>
                 </div>
                 <div class="quantity">
-                    <button class="minus" data-tooltip="Зменшити" onclick="decrease(event)" type="button">-</button>
+                    <button class="minus" data-tooltip="Зменшити"  onclick="changeQuantity(event, -1)"" type="button">-</button>
                     <button class="number" data-tooltip="Кількість" disabled="disabled">2</button>
-                    <button class="plus" data-tooltip="Збільшіти" onclick="increase(event)" type="button">+</button>
+                    <button class="plus" data-tooltip="Збільшіти"  onclick="changeQuantity(event, 1)" type="button">+</button>
                 </div>
                 <div class="status">
                     <button class="isBought" data-tooltip="Статус" onclick="buy(event)">Не куплено</button>
@@ -33,9 +33,9 @@
                     <p>Печиво</p>
                 </div>
                 <div class="quantity">
-                    <button class="minus"  data-tooltip="Зменшити" onclick="decrease(event)" type="button">-</button>
+                    <button class="minus"  data-tooltip="Зменшити"  onclick="changeQuantity(event, -1)"" type="button">-</button>
                     <button class="number" data-tooltip="Кількість" disabled="disabled">2</button>
-                    <button class="plus" data-tooltip="Збільшіти" onclick="increase(event)" type="button">+</button>
+                    <button class="plus" data-tooltip="Збільшіти"  onclick="changeQuantity(event, 1)"" type="button">+</button>
                 </div>
                 <div class="status">
                     <button class="isBought" data-tooltip="Статус" onclick="buy(event)">Куплено</button>
@@ -47,35 +47,35 @@
                     <p contenteditable="true">Сир</p>
                 </div>
                 <div class="quantity">
-                    <button class="minus" data-tooltip="Зменшити" onclick="decrease(event)" type="button">-</button>
+                    <button class="minus" data-tooltip="Зменшити"  onclick="changeQuantity(event, -1)" type="button">-</button>
                     <button class="number" data-tooltip="Кількість" disabled="disabled">1</button>
-                    <button class="plus" data-tooltip="Збільшіти" onclick="increase(event)" type="button">+</button>
+                    <button class="plus" data-tooltip="Збільшіти"  onclick="changeQuantity(event, 1)" type="button">+</button>
                 </div>
                 <div class="status">
                     <button class="isBought" data-tooltip="Статус" onclick="buy(event)">Куплено</button>
                     <button class="cancel" data-tooltip="Видалити" onclick="deleteProduct(event)" type="button">x</button>   
                 </div>
-            </section>
+            </section> -->
         </main>
 
         <aside class="cart">
             <h2 class="title">Залишилось</h2>
             <div class="remaining-item">
-                <span class="product-item">
+              <!--  <span class="product-item">
                     Печиво
                     <span class="amount">2</span>
                 </span>
                 <span class="product-item">
                     Сир
                     <span class="amount">1</span>
-                </span>
+                </span>-->
             </div>
             <h2 class="title">Куплено</h2>
             <div class="bought-item">
-                <span class="product-item">
+                <!--<span class="product-item">
                     Помідори
                     <span class="amount">2</span>
-                </span>
+                </span>-->
             </div>
         </aside>
         <footer>

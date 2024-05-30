@@ -105,67 +105,38 @@ function buy(event){
 
     updateRightPanel();
 }
-//function to !increase the quantity of a product in the cart
-function increase(event){
+
+function changeQuantity(event, delta) {
     var buttonClicked = event.target;
-    var productItem = buttonClicked.parentElement.parentElement;
-    var productQuantity = productItem.getElementsByClassName('number')[0];
+    var productItem = buttonClicked.closest('.product');
+    var productQuantity = productItem.querySelector('.number');
+    var productName = productItem.querySelector('.name').textContent.trim();
 
-    // Get the product name
-    var productName = productItem.getElementsByClassName('name')[0].textContent;
-
-    // Find the corresponding product in the products array
+    // to find product
     var productIndex = products.findIndex(product => product.name === productName);
 
-    // increase the quantity
     var currentQuantity = parseInt(productQuantity.textContent);
-    currentQuantity++;
-    if(currentQuantity > 1){
-        productItem.getElementsByClassName('minus')[0].style.backgroundColor = '#DB2828';
-        productItem.getElementsByClassName('minus')[0].style.boxShadow = '0 4px #BF2728';
+    currentQuantity = Math.max(1, currentQuantity + delta);
+    productQuantity.textContent = currentQuantity;
+
+    //get minus button and change styles accordingly
+    var minusButton = productItem.querySelector('.minus');
+
+    if (currentQuantity === 1) {
+        minusButton.style.backgroundColor = '#EF9F9E';
+        minusButton.style.boxShadow = '0 4px #EF9F9E';
+    } else {
+        minusButton.style.backgroundColor = '#DB2828';
+        minusButton.style.boxShadow = '0 4px #BF2728';
     }
-    productQuantity.textContent = currentQuantity; 
 
-    // Update the product quantity in the array
+    //update local storage data
     products[productIndex].quantity = currentQuantity;
-
-    // Save the updated products array to local storage
     localStorage.setItem('products', JSON.stringify(products));
 
     updateRightPanel();
 }
 
-//function to !decrease the quantity of a product in the cart
-function decrease(event){
-    var buttonClicked = event.target;
-    var productItem = buttonClicked.parentElement.parentElement;
-    var productQuantity = productItem.getElementsByClassName('number')[0];
-
-    // Get the product name
-    var productName = productItem.getElementsByClassName('name')[0].textContent;
-
-    // Find the corresponding product in the products array
-    var productIndex = products.findIndex(product => product.name === productName);
-
-    // decrease the quantity
-    var currentQuantity = parseInt(productQuantity.textContent);
-    if (currentQuantity > 1) { 
-        currentQuantity--;
-        if(currentQuantity == 1){
-            buttonClicked.style.backgroundColor = '#EF9F9E';
-            buttonClicked.style.boxShadow = '0 4px #EF9F9E';
-        }
-    }
-    productQuantity.textContent = currentQuantity; 
-
-    // Update the product quantity in the array
-    products[productIndex].quantity = currentQuantity;
-
-    // Save the updated products array to local storage
-    localStorage.setItem('products', JSON.stringify(products));
-
-    updateRightPanel();
-}
 
 function addProduct(event) {
     event.preventDefault(); // prevent form submission
@@ -326,9 +297,7 @@ function addProductAfterReload(product) {
     nameDiv.appendChild(pTag);
 
     var quantityDiv = document.createElement('div');
-    quantityDiv.className = 'quantity';
-
-    
+    quantityDiv.className = 'quantity';    
 
     let minusButton = document.createElement('button');
     minusButton.style.backgroundColor = product.quantity > 1 ? '#DB2828' : '#EF9F9E';
@@ -337,7 +306,7 @@ function addProductAfterReload(product) {
  
     minusButton.className = 'minus';
     minusButton.textContent = '-';
-    minusButton.onclick = decrease;
+    minusButton.onclick = changeQuantity;
 
     var numberButton = document.createElement('button');
     numberButton.className = 'number';
@@ -348,7 +317,7 @@ function addProductAfterReload(product) {
     plusButton.style.display = product.plusVisible ? 'block' : 'none';
     plusButton.className = 'plus';
     plusButton.textContent = '+';
-    plusButton.onclick = increase;
+    plusButton.onclick = changeQuantity;
 
     quantityDiv.appendChild(minusButton);
     quantityDiv.appendChild(numberButton);
