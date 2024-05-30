@@ -13,7 +13,6 @@ function product(name, quantity, status) {
     };
 }
 
-
 function remember(event){
     var productItem = event.target.parentElement;
     var editedName = productItem.getElementsByClassName('name')[0].textContent.trim();
@@ -38,19 +37,11 @@ function deleteProduct(event){
             var productItem = buttonClicked.parentElement.parentElement;
             var productName = productItem.getElementsByClassName('name')[0].textContent.trim();
 
-            // remove from the left panel
             productItem.remove();
-
-            // Find the corresponding product in the products array
             var productIndex = products.findIndex(product => product.name === productName);
-
-            // Remove the product from the array
             products.splice(productIndex, 1);
-
-            // Save the updated products array to local storage
             localStorage.setItem('products', JSON.stringify(products));
 
-            // remove from the right panel
             console.log(cartItems);
             updateRightPanel();
         });
@@ -137,99 +128,6 @@ function changeQuantity(event, delta) {
     updateRightPanel();
 }
 
-
-function addProduct(event) {
-    event.preventDefault(); // prevent form submission
-    var productName = document.querySelector('.product-name').value;
-
-    products.push({
-        name: productName,
-        quantity: 1,
-        status: 'Куплено',
-        plusVisible: true,
-        minusVisible: true,
-        cancelVisible: true
-    });
-
-
-    localStorage.setItem('products', JSON.stringify(products));
-
-    // get the product
-
-    var newProduct = document.createElement('section');
-    newProduct.className = 'product';
-    newProduct.style.height = '51.2px';
-
-    var nameDiv = document.createElement('div');
-    nameDiv.className = 'name';
-    nameDiv.contentEditable = 'true';
-    nameDiv.style.height = '51.2px';
-    nameDiv.addEventListener('focus', function(event){
-    nameDiv.style.height = '30%';nameDiv.style.marginTop = '1%';
-    nameDiv.style.paddingBottom = '1%';
-    nameDiv.style.paddingTop = '2%';
-    nameDiv.style.marginBottom = '2%';
-    nameDiv.style.textIndent = '3px';
-    }); 
-    
-    var pTag = document.createElement('p');
-    pTag.textContent = productName;
-    
-    nameDiv.appendChild(pTag);
-
-    var quantityDiv = document.createElement('div');
-    quantityDiv.className = 'quantity';
-
-    var minusButton = document.createElement('button');
-    minusButton.className = 'minus';
-    minusButton.textContent = '-';
-    minusButton.onclick = decrease;
-    minusButton.style.backgroundColor = '#EF9F9E';
-    minusButton.style.boxShadow = '0 4px #EF9F9E';
-
-    var numberButton = document.createElement('button');
-    numberButton.className = 'number';
-    numberButton.textContent = '1';
-    numberButton.disabled = true;
-
-    var plusButton = document.createElement('button');
-    plusButton.className = 'plus';
-    plusButton.textContent = '+';
-    plusButton.onclick = increase;
-
-    quantityDiv.appendChild(minusButton);
-    quantityDiv.appendChild(numberButton);
-    quantityDiv.appendChild(plusButton);
-
-    var statusDiv = document.createElement('div');
-    statusDiv.className = 'status';
-
-    var isBoughtButton = document.createElement('button');
-    isBoughtButton.className = 'isBought';
-    isBoughtButton.textContent = 'Куплено';
-    isBoughtButton.onclick = buy;
-
-    var cancelButton = document.createElement('button');
-    cancelButton.className = 'cancel';
-    cancelButton.textContent = 'x';
-    cancelButton.onclick = deleteProduct;
-
-    statusDiv.appendChild(isBoughtButton);
-    statusDiv.appendChild(cancelButton);
-
-    newProduct.appendChild(nameDiv);
-    newProduct.appendChild(quantityDiv);
-    newProduct.appendChild(statusDiv);
-
-    document.querySelector('.product-box').appendChild(newProduct);
-    updateRightPanel();
-
-    document.querySelector('.product-name').value = '';
-    document.querySelector('.product-name').focus();
-
-
-}   
-
 function updateRightPanel() {
     var products = document.getElementsByClassName('product'); //products in the left panel
     // to clear the right panel
@@ -270,54 +168,70 @@ function handleKeyDown(event) {
     }
 }
 
-function addProductAfterReload(product) {
-    let productName = product.name;
-    let productQuantity = product.quantity;
-    let productStatus = product.status;
+function addProduct(event) {
+    event.preventDefault(); // prevent form submission
+    var productName = document.querySelector('.product-name').value.trim();
+    
+    if (!productName) return; // Ensure non-empty product name
 
-    var newProduct = document.createElement('section');
-    newProduct.className = 'product';
-    newProduct.style.height = '51.2px';
+    // Create new product object and push to products array
+    let newProduct = product(productName, 1, 'Куплено');
+    products.push(newProduct);
+    localStorage.setItem('products', JSON.stringify(products));
+
+    // Create the product element
+    createProductElement(newProduct);
+
+    // Clear and focus the input field
+    document.querySelector('.product-name').value = '';
+    document.querySelector('.product-name').focus();
+    updateRightPanel();
+}
+
+// Helper function to create and append product element
+function createProductElement(product) {
+    var newProductElement = document.createElement('section');
+    newProductElement.className = 'product';
+    newProductElement.style.height = '51.2px';
 
     var nameDiv = document.createElement('div');
     nameDiv.className = 'name';
     nameDiv.contentEditable = 'true';
     nameDiv.style.height = '51.2px';
-    nameDiv.addEventListener('focus', function(event){
-        nameDiv.style.height = '30%';
-        nameDiv.style.marginTop = '1%';
-        nameDiv.style.paddingBottom = '1%';
-        nameDiv.style.paddingTop = '2%';
-        nameDiv.style.marginBottom = '2%';
-        nameDiv.style.textIndent = '3px';
-    }); 
+    nameDiv.onfocus = remember;
+    nameDiv.onblur = rename;
 
     var pTag = document.createElement('p');
-    pTag.textContent = productName;
+    pTag.textContent = product.name;
     nameDiv.appendChild(pTag);
 
     var quantityDiv = document.createElement('div');
-    quantityDiv.className = 'quantity';    
+    quantityDiv.className = 'quantity';
 
-    let minusButton = document.createElement('button');
-    minusButton.style.backgroundColor = product.quantity > 1 ? '#DB2828' : '#EF9F9E';
-    minusButton.style.boxShadow = product.quantity > 1 ? '0 4px #BF2728' : '0 4px #EF9F9E';
-    minusButton.style.display = product.minusVisible ? 'block' : 'none';
- 
+    var minusButton = document.createElement('button');
     minusButton.className = 'minus';
     minusButton.textContent = '-';
-    minusButton.onclick = changeQuantity;
+    minusButton.onclick = (event) => changeQuantity(event, -1);
+    minusButton.style.backgroundColor = '#EF9F9E';
+    minusButton.style.boxShadow = '0 4px #EF9F9E';
+
+    if (product.quantity === 1) {
+        minusButton.style.backgroundColor = '#EF9F9E';
+        minusButton.style.boxShadow = '0 4px #EF9F9E';
+    } else {
+        minusButton.style.backgroundColor = '#DB2828';
+        minusButton.style.boxShadow = '0 4px #BF2728';
+    }
 
     var numberButton = document.createElement('button');
     numberButton.className = 'number';
-    numberButton.textContent = productQuantity;
+    numberButton.textContent = product.quantity;
     numberButton.disabled = true;
 
-    let plusButton = document.createElement('button');
-    plusButton.style.display = product.plusVisible ? 'block' : 'none';
+    var plusButton = document.createElement('button');
     plusButton.className = 'plus';
     plusButton.textContent = '+';
-    plusButton.onclick = changeQuantity;
+    plusButton.onclick = (event) => changeQuantity(event, 1);
 
     quantityDiv.appendChild(minusButton);
     quantityDiv.appendChild(numberButton);
@@ -328,30 +242,37 @@ function addProductAfterReload(product) {
 
     var isBoughtButton = document.createElement('button');
     isBoughtButton.className = 'isBought';
-    isBoughtButton.textContent = productStatus;
-    if(productStatus === 'Не куплено'){
-        isBoughtButton.style.marginRight = '7%';
-      //  let pElement = newProduct.querySelector('.name p');
-        //pElement.style.textDecoration = 'line-through';
-    }
+    isBoughtButton.textContent = product.status;
     isBoughtButton.onclick = buy;
 
-    let cancelButton = document.createElement('button');
-    cancelButton.style.visibility = product.cancelVisible ? 'visible' : 'hidden';
-    cancelButton.style.position = product.cancelVisible ? 'relative' : 'absolute';
+    var cancelButton = document.createElement('button');
     cancelButton.className = 'cancel';
     cancelButton.textContent = 'x';
     cancelButton.onclick = deleteProduct;
 
+    if (product.status === 'Не куплено') {
+        nameDiv.style.textDecoration = 'line-through';
+        nameDiv.contentEditable = 'false';
+        isBoughtButton.style.marginRight = '7%';
+        cancelButton.style.visibility = 'hidden';
+        cancelButton.style.position = 'absolute';
+        minusButton.style.visibility = 'hidden';
+        plusButton.style.visibility = 'hidden';
+    }
+
     statusDiv.appendChild(isBoughtButton);
     statusDiv.appendChild(cancelButton);
 
-    newProduct.appendChild(nameDiv);
-    newProduct.appendChild(quantityDiv);
-    newProduct.appendChild(statusDiv);
+    newProductElement.appendChild(nameDiv);
+    newProductElement.appendChild(quantityDiv);
+    newProductElement.appendChild(statusDiv);
 
-    document.querySelector('.product-box').appendChild(newProduct);
+    document.querySelector('.product-box').appendChild(newProductElement);
     updateRightPanel();
+}
+
+function addProductAfterReload(product) {
+    createProductElement(product);
 }
 
 window.onload = function() {
