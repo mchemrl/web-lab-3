@@ -1,5 +1,18 @@
 var cartItems = document.getElementsByClassName('product-item'); //products in the right panel
-let editedName = '';
+var products = JSON.parse(localStorage.getItem('products')) || [];
+function product(name, quantity, status) {
+    return { 
+        name, 
+        quantity, 
+        status, 
+        plusVisible: true, 
+        minusVisible: true, 
+        cancelVisible: true ,
+        minusColor: quantity > 1 ? '#DB2828' : '#EF9F9E',
+        minusShadow: quantity > 1 ? '0 4px #BF2728' : '0 4px #EF9F9E'
+    };
+}
+
 
 function remember(event){
     var productItem = event.target.parentElement;
@@ -15,7 +28,6 @@ function rename(event){
     }
     updateRightPanel();
 }
-
 //function to delete a product from the cart and the left panel
 function deleteProduct(event){
     var removeListItemButtons = document.getElementsByClassName('cancel');
@@ -29,17 +41,31 @@ function deleteProduct(event){
             // remove from the left panel
             productItem.remove();
 
+            // Find the corresponding product in the products array
+            var productIndex = products.findIndex(product => product.name === productName);
+
+            // Remove the product from the array
+            products.splice(productIndex, 1);
+
+            // Save the updated products array to local storage
+            localStorage.setItem('products', JSON.stringify(products));
+
             // remove from the right panel
             console.log(cartItems);
             updateRightPanel();
         });
     }
-   
 }
 
 function buy(event){
     var buttonClicked = event.target;
     var productItem = buttonClicked.parentElement.parentElement;
+
+    // Get the product name
+    var productName = productItem.getElementsByClassName('name')[0].textContent;
+
+    // Find the corresponding product in the products array
+    var productIndex = products.findIndex(product => product.name === productName);
 
     // change the status
     if (buttonClicked.textContent === 'Куплено') {
@@ -51,6 +77,12 @@ function buy(event){
         buttonClicked.style.marginRight = '7%';
         productItem.getElementsByClassName('name')[0].style.textDecoration = 'line-through';
         productItem.getElementsByClassName('name')[0].contentEditable = 'false';
+
+        // Update the product status in the array
+        products[productIndex].status = 'Не куплено';
+        products[productIndex].plusVisible = false;
+        products[productIndex].minusVisible = false;
+        products[productIndex].cancelVisible = false;
     } else {
         buttonClicked.textContent = 'Куплено';
         productItem.getElementsByClassName('cancel')[0].style.visibility='visible';
@@ -60,15 +92,30 @@ function buy(event){
         buttonClicked.style.marginRight = '0';
         productItem.getElementsByClassName('name')[0].contentEditable = 'true';
         productItem.getElementsByClassName('name')[0].style.textDecoration = 'none';
+
+        // Update the product status in the array
+        products[productIndex].status = 'Куплено';
+        products[productIndex].plusVisible = true;
+        products[productIndex].minusVisible = true;
+        products[productIndex].cancelVisible = true;
     }
+
+    // Save the updated products array to local storage
+    localStorage.setItem('products', JSON.stringify(products));
+
     updateRightPanel();
 }
-
 //function to !increase the quantity of a product in the cart
 function increase(event){
     var buttonClicked = event.target;
     var productItem = buttonClicked.parentElement.parentElement;
     var productQuantity = productItem.getElementsByClassName('number')[0];
+
+    // Get the product name
+    var productName = productItem.getElementsByClassName('name')[0].textContent;
+
+    // Find the corresponding product in the products array
+    var productIndex = products.findIndex(product => product.name === productName);
 
     // increase the quantity
     var currentQuantity = parseInt(productQuantity.textContent);
@@ -78,6 +125,13 @@ function increase(event){
         productItem.getElementsByClassName('minus')[0].style.boxShadow = '0 4px #BF2728';
     }
     productQuantity.textContent = currentQuantity; 
+
+    // Update the product quantity in the array
+    products[productIndex].quantity = currentQuantity;
+
+    // Save the updated products array to local storage
+    localStorage.setItem('products', JSON.stringify(products));
+
     updateRightPanel();
 }
 
@@ -86,6 +140,12 @@ function decrease(event){
     var buttonClicked = event.target;
     var productItem = buttonClicked.parentElement.parentElement;
     var productQuantity = productItem.getElementsByClassName('number')[0];
+
+    // Get the product name
+    var productName = productItem.getElementsByClassName('name')[0].textContent;
+
+    // Find the corresponding product in the products array
+    var productIndex = products.findIndex(product => product.name === productName);
 
     // decrease the quantity
     var currentQuantity = parseInt(productQuantity.textContent);
@@ -97,14 +157,33 @@ function decrease(event){
         }
     }
     productQuantity.textContent = currentQuantity; 
+
+    // Update the product quantity in the array
+    products[productIndex].quantity = currentQuantity;
+
+    // Save the updated products array to local storage
+    localStorage.setItem('products', JSON.stringify(products));
+
     updateRightPanel();
 }
 
 function addProduct(event) {
     event.preventDefault(); // prevent form submission
+    var productName = document.querySelector('.product-name').value;
+
+    products.push({
+        name: productName,
+        quantity: 1,
+        status: 'Куплено',
+        plusVisible: true,
+        minusVisible: true,
+        cancelVisible: true
+    });
+
+
+    localStorage.setItem('products', JSON.stringify(products));
 
     // get the product
-    var productName = document.querySelector('.product-name').value;
 
     var newProduct = document.createElement('section');
     newProduct.className = 'product';
@@ -176,6 +255,8 @@ function addProduct(event) {
 
     document.querySelector('.product-name').value = '';
     document.querySelector('.product-name').focus();
+
+
 }   
 
 function updateRightPanel() {
@@ -215,5 +296,99 @@ function handleKeyDown(event) {
         if (inputField.value.trim() !== '') {
             addButton.click(); 
         }
+    }
+}
+
+function addProductAfterReload(product) {
+    let productName = product.name;
+    let productQuantity = product.quantity;
+    let productStatus = product.status;
+
+    var newProduct = document.createElement('section');
+    newProduct.className = 'product';
+    newProduct.style.height = '51.2px';
+
+    var nameDiv = document.createElement('div');
+    nameDiv.className = 'name';
+    nameDiv.contentEditable = 'true';
+    nameDiv.style.height = '51.2px';
+    nameDiv.addEventListener('focus', function(event){
+        nameDiv.style.height = '30%';
+        nameDiv.style.marginTop = '1%';
+        nameDiv.style.paddingBottom = '1%';
+        nameDiv.style.paddingTop = '2%';
+        nameDiv.style.marginBottom = '2%';
+        nameDiv.style.textIndent = '3px';
+    }); 
+
+    var pTag = document.createElement('p');
+    pTag.textContent = productName;
+    nameDiv.appendChild(pTag);
+
+    var quantityDiv = document.createElement('div');
+    quantityDiv.className = 'quantity';
+
+    
+
+    let minusButton = document.createElement('button');
+    minusButton.style.backgroundColor = product.quantity > 1 ? '#DB2828' : '#EF9F9E';
+    minusButton.style.boxShadow = product.quantity > 1 ? '0 4px #BF2728' : '0 4px #EF9F9E';
+    minusButton.style.display = product.minusVisible ? 'block' : 'none';
+ 
+    minusButton.className = 'minus';
+    minusButton.textContent = '-';
+    minusButton.onclick = decrease;
+
+    var numberButton = document.createElement('button');
+    numberButton.className = 'number';
+    numberButton.textContent = productQuantity;
+    numberButton.disabled = true;
+
+    let plusButton = document.createElement('button');
+    plusButton.style.display = product.plusVisible ? 'block' : 'none';
+    plusButton.className = 'plus';
+    plusButton.textContent = '+';
+    plusButton.onclick = increase;
+
+    quantityDiv.appendChild(minusButton);
+    quantityDiv.appendChild(numberButton);
+    quantityDiv.appendChild(plusButton);
+
+    var statusDiv = document.createElement('div');
+    statusDiv.className = 'status';
+
+    var isBoughtButton = document.createElement('button');
+    isBoughtButton.className = 'isBought';
+    isBoughtButton.textContent = productStatus;
+    if(productStatus === 'Не куплено'){
+        isBoughtButton.style.marginRight = '7%';
+      //  let pElement = newProduct.querySelector('.name p');
+        //pElement.style.textDecoration = 'line-through';
+    }
+    isBoughtButton.onclick = buy;
+
+    let cancelButton = document.createElement('button');
+    cancelButton.style.visibility = product.cancelVisible ? 'visible' : 'hidden';
+    cancelButton.style.position = product.cancelVisible ? 'relative' : 'absolute';
+    cancelButton.className = 'cancel';
+    cancelButton.textContent = 'x';
+    cancelButton.onclick = deleteProduct;
+
+    statusDiv.appendChild(isBoughtButton);
+    statusDiv.appendChild(cancelButton);
+
+    newProduct.appendChild(nameDiv);
+    newProduct.appendChild(quantityDiv);
+    newProduct.appendChild(statusDiv);
+
+    document.querySelector('.product-box').appendChild(newProduct);
+    updateRightPanel();
+}
+
+window.onload = function() {
+    products = JSON.parse(localStorage.getItem('products')) || [];
+    for (let i = 0; i < products.length; i++) {
+        let product = products[i];
+        addProductAfterReload(product);
     }
 }
