@@ -1,4 +1,5 @@
 var products = JSON.parse(localStorage.getItem('products')) || [];
+var editedName = '';
 function product(name, quantity, status) {
     return { 
         name, 
@@ -14,33 +15,40 @@ function product(name, quantity, status) {
 
 //function to remember the name of the product in the cart
 function remember(event){
-    var productItem = event.target.parentElement;
-    var editedName = productItem.getElementsByClassName('name')[0].textContent.trim();
+    productItem = event.target.parentElement;
+    editedName = productItem.getElementsByClassName('name')[0].textContent.trim();
+    
 }
 
 //function to rename a product in the cart
 function rename(event){
     var productItem = event.target.parentElement;
-    var newName = productItem.getElementsByTagName('p')[0].textContent.trim();
+    let newName = productItem.getElementsByTagName('p')[0].textContent.trim();
     if (newName !== "") {
-        editedName = newName;
+        // Update the product name in the products array
+        let productIndex = products.findIndex(product => product.name === editedName);
+        if (productIndex !== -1) {
+            products[productIndex].name = newName;
+        }
     } else {
+        // If newName is empty, set it to the previous name
         productItem.getElementsByTagName('p')[0].textContent = editedName;
     }
+    localStorage.setItem('products', JSON.stringify(products));
     updateRightPanel();
 }
 //function to delete a product from the cart and the left panel
 function deleteProduct(event){
     var removeListItemButtons = document.getElementsByClassName('cancel');
-    for(var i = 0; i< removeListItemButtons.length; i++){
-        var button = removeListItemButtons[i];
+    for(let i = 0; i< removeListItemButtons.length; i++){
+        let button = removeListItemButtons[i];
         button.addEventListener('click', function(event){
-            var buttonClicked = event.target;
-            var productItem = buttonClicked.parentElement.parentElement;
-            var productName = productItem.getElementsByClassName('name')[0].textContent.trim();
+            let buttonClicked = event.target;
+            let productItem = buttonClicked.parentElement.parentElement;
+            let productName = productItem.getElementsByClassName('name')[0].textContent.trim();
 
             productItem.remove();
-            var productIndex = products.findIndex(product => product.name === productName);
+            let productIndex = products.findIndex(product => product.name === productName);
             products.splice(productIndex, 1);
             localStorage.setItem('products', JSON.stringify(products));
 
@@ -52,9 +60,9 @@ function deleteProduct(event){
 //function to change the status of the product in the cart
 function buy(event){
     var buttonClicked = event.target;
-    var productItem = buttonClicked.parentElement.parentElement;
-    var productName = productItem.getElementsByClassName('name')[0].textContent;
-    var productIndex = products.findIndex(product => product.name === productName);
+    let productItem = buttonClicked.parentElement.parentElement;
+    let productName = productItem.getElementsByClassName('name')[0].textContent;
+    let productIndex = products.findIndex(product => product.name === productName);
 
     // change the status
     if (buttonClicked.textContent === 'Куплено') {
@@ -94,19 +102,19 @@ function buy(event){
 
 function changeQuantity(event, delta) {
     var buttonClicked = event.target;
-    var productItem = buttonClicked.closest('.product');
-    var productQuantity = productItem.querySelector('.number');
-    var productName = productItem.querySelector('.name').textContent.trim();
+    let productItem = buttonClicked.closest('.product');
+    let productQuantity = productItem.querySelector('.number');
+    let productName = productItem.querySelector('.name').textContent.trim();
 
     // to find product
-    var productIndex = products.findIndex(product => product.name === productName);
+    let productIndex = products.findIndex(product => product.name === productName);
 
-    var currentQuantity = parseInt(productQuantity.textContent);
+    let currentQuantity = parseInt(productQuantity.textContent);
     currentQuantity = Math.max(1, currentQuantity + delta);
     productQuantity.textContent = currentQuantity;
 
     //get minus button and change styles accordingly
-    var minusButton = productItem.querySelector('.minus');
+    let minusButton = productItem.querySelector('.minus');
 
     if (currentQuantity === 1) {
         minusButton.style.backgroundColor = '#EF9F9E';
@@ -122,22 +130,22 @@ function changeQuantity(event, delta) {
 }
 
 function updateRightPanel() {
-    var products = document.getElementsByClassName('product'); //products in the left panel
+    let products = document.getElementsByClassName('product'); //products in the left panel
     // to clear the right panel
-    var remainingItems = document.getElementsByClassName('remaining-item')[0];
-    var boughtItems = document.getElementsByClassName('bought-item')[0];
+    let remainingItems = document.getElementsByClassName('remaining-item')[0];
+    let boughtItems = document.getElementsByClassName('bought-item')[0];
     remainingItems.innerHTML = '';
     boughtItems.innerHTML = '';
 
     // update the right panel (check each product)
-    for (var i = 0; i < products.length; i++) {
-        var product = products[i];
-        var productName = product.getElementsByClassName('name')[0].textContent.trim();
-        var productQuantity = product.getElementsByClassName('number')[0].textContent;
-        var productStatus = product.getElementsByClassName('isBought')[0].textContent.trim();
+    for (let i = 0; i < products.length; i++) {
+        let product = products[i];
+        let productName = product.getElementsByClassName('name')[0].textContent.trim();
+        let productQuantity = product.getElementsByClassName('number')[0].textContent;
+        let productStatus = product.getElementsByClassName('isBought')[0].textContent.trim();
 
         // create a new product item for the right panel
-        var productItem = document.createElement('span');
+        let productItem = document.createElement('span');
         productItem.className = 'product-item';
         productItem.innerHTML = productName + ' ' + '<span class="amount">' + productQuantity + '</span>';
 
@@ -179,25 +187,25 @@ function addProduct(event) {
 
 // create a section for a product
 function createProductElement(product) {
-    var newProductElement = document.createElement('section');
+    let newProductElement = document.createElement('section');
     newProductElement.className = 'product';
     newProductElement.style.height = '51.2px';
 
-    var nameDiv = document.createElement('div');
+    let nameDiv = document.createElement('div');
     nameDiv.className = 'name';
     nameDiv.contentEditable = 'true';
     nameDiv.style.height = '51.2px';
     nameDiv.onfocus = remember;
     nameDiv.onblur = rename;
 
-    var pTag = document.createElement('p');
+    let pTag = document.createElement('p');
     pTag.textContent = product.name;
     nameDiv.appendChild(pTag);
 
-    var quantityDiv = document.createElement('div');
+    let quantityDiv = document.createElement('div');
     quantityDiv.className = 'quantity';
 
-    var minusButton = document.createElement('button');
+    let minusButton = document.createElement('button');
     minusButton.className = 'minus';
     minusButton.textContent = '-';
     minusButton.onclick = (event) => changeQuantity(event, -1);
@@ -212,12 +220,12 @@ function createProductElement(product) {
         minusButton.style.boxShadow = '0 4px #BF2728';
     }
 
-    var numberButton = document.createElement('button');
+    let numberButton = document.createElement('button');
     numberButton.className = 'number';
     numberButton.textContent = product.quantity;
     numberButton.disabled = true;
 
-    var plusButton = document.createElement('button');
+    let plusButton = document.createElement('button');
     plusButton.className = 'plus';
     plusButton.textContent = '+';
     plusButton.onclick = (event) => changeQuantity(event, 1);
@@ -226,15 +234,15 @@ function createProductElement(product) {
     quantityDiv.appendChild(numberButton);
     quantityDiv.appendChild(plusButton);
 
-    var statusDiv = document.createElement('div');
+    let statusDiv = document.createElement('div');
     statusDiv.className = 'status';
 
-    var isBoughtButton = document.createElement('button');
+    let isBoughtButton = document.createElement('button');
     isBoughtButton.className = 'isBought';
     isBoughtButton.textContent = product.status;
     isBoughtButton.onclick = buy;
 
-    var cancelButton = document.createElement('button');
+    let cancelButton = document.createElement('button');
     cancelButton.className = 'cancel';
     cancelButton.textContent = 'x';
     cancelButton.onclick = deleteProduct;
@@ -260,7 +268,7 @@ function createProductElement(product) {
     updateRightPanel();
 }
 
-//after reload
+//after
 function addProductAfterReload(product) {
     createProductElement(product);
 }
